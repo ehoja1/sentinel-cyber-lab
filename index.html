@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SENTINEL — laboratório local de análise defensiva de logs e eventos de segurança.">
+  <title>SENTINEL — Security Lab</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview" aria-label="SENTINEL início">
+        <span class="brand-mark">S<span>.</span></span>
+        <span><strong>SENTINEL</strong><small>SECURITY LAB</small></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="navigation" aria-label="Navegação principal">
+        <button class="nav-link active" data-view="overview"><span class="nav-icon">▦</span> Visão geral</button>
+        <button class="nav-link" data-view="analyzer"><span class="nav-icon">⌕</span> Analisador de logs</button>
+        <button class="nav-link" data-view="alerts"><span class="nav-icon">◇</span> Alertas <span class="nav-count" id="nav-alert-count">0</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mode-card"><span class="status-dot"></span><div><strong>Modo laboratório</strong><small>Somente análise local</small></div></div>
+        <div class="sidebar-footer">SENTINEL <span>v0.1.0</span><br><small>DEFENSIVE SECURITY TOOLKIT</small></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" aria-label="Abrir menu">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumb-current">Visão geral</strong></div>
+        <div class="topbar-right"><span class="local-indicator"><span class="status-dot"></span> LOCAL</span><span class="avatar">S</span></div>
+      </header>
+
+      <section class="view active" id="view-overview">
+        <div class="page-heading">
+          <div><p class="eyebrow">CENTRO DE OPERAÇÕES / VISÃO GERAL</p><h1>Visão geral</h1><p class="subtitle">Resumo das análises de segurança deste laboratório.</p></div>
+          <button class="button button-primary" id="go-analyzer"><span>＋</span> Nova análise</button>
+        </div>
+        <div class="notice"><span class="notice-icon">i</span><p><strong>Ambiente de demonstração.</strong> Os dados iniciais são fictícios. Importe um arquivo de log para executar uma análise local no navegador.</p></div>
+
+        <div class="metrics-grid">
+          <article class="metric-card"><div class="metric-top"><span>Eventos analisados</span><span class="metric-icon">≋</span></div><strong class="metric-value" id="metric-events">0</strong><div class="metric-foot">Nesta sessão</div></article>
+          <article class="metric-card"><div class="metric-top"><span>Alertas identificados</span><span class="metric-icon warning">◇</span></div><strong class="metric-value" id="metric-alerts">0</strong><div class="metric-foot">Regras correspondentes</div></article>
+          <article class="metric-card"><div class="metric-top"><span>Alta severidade</span><span class="metric-icon danger">!</span></div><strong class="metric-value" id="metric-high">0</strong><div class="metric-foot">Requerem revisão</div></article>
+          <article class="metric-card"><div class="metric-top"><span>Arquivos analisados</span><span class="metric-icon">▤</span></div><strong class="metric-value" id="metric-files">0</strong><div class="metric-foot">Importados nesta sessão</div></article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel events-panel"><div class="panel-heading"><div><h2>Eventos recentes</h2><p>Atividade detectada nas análises atuais</p></div><button class="text-button" data-view="alerts">Ver alertas <span>→</span></button></div>
+            <div class="table-wrap"><table><thead><tr><th>EVENTO</th><th>ORIGEM</th><th>SEVERIDADE</th><th>HORÁRIO</th></tr></thead><tbody id="recent-events"><tr class="empty-row"><td colspan="4">Nenhum evento analisado ainda. Importe um log para começar.</td></tr></tbody></table></div>
+          </section>
+          <section class="panel rules-panel"><div class="panel-heading"><div><h2>Regras ativas</h2><p>Detecções locais habilitadas</p></div><span class="small-pill">3 ATIVAS</span></div>
+            <div class="rule-row"><span class="rule-symbol red">!</span><div><strong>Falhas de autenticação</strong><small>Várias falhas de login</small></div><span class="rule-state">Ativa</span></div>
+            <div class="rule-row"><span class="rule-symbol amber">↗</span><div><strong>Eventos críticos</strong><small>Palavras-chave de risco</small></div><span class="rule-state">Ativa</span></div>
+            <div class="rule-row"><span class="rule-symbol blue">⌁</span><div><strong>Erros de serviço</strong><small>Falhas e exceções</small></div><span class="rule-state">Ativa</span></div>
+            <div class="rules-note">As regras são heurísticas simples; resultados precisam de validação humana.</div>
+          </section>
+        </div>
+        <section class="panel getting-started"><div class="getting-icon">⌘</div><div><h2>Comece com um arquivo de log</h2><p>Selecione um arquivo de texto para identificar eventos suspeitos usando regras locais transparentes.</p></div><button class="button button-secondary" id="go-analyzer-bottom">Abrir analisador <span>→</span></button></section>
+      </section>
+
+      <section class="view" id="view-analyzer">
+        <div class="page-heading"><div><p class="eyebrow">FERRAMENTAS / INGESTÃO DE DADOS</p><h1>Analisador de logs</h1><p class="subtitle">Inspecione arquivos de texto e procure padrões potencialmente suspeitos.</p></div></div>
+        <div class="notice"><span class="notice-icon">i</span><p><strong>Privacidade:</strong> o arquivo é processado no navegador e não é enviado a nenhum servidor nesta versão.</p></div>
+        <section class="panel upload-panel"><div class="panel-heading"><div><h2>Importar arquivo</h2><p>Formatos aceitos: .log, .txt e .csv — limite de 2 MB.</p></div><span class="small-pill">PROCESSAMENTO LOCAL</span></div>
+          <label class="drop-zone" id="drop-zone" for="log-file"><span class="upload-symbol">↑</span><strong>Arraste um arquivo para cá</strong><span>ou <span class="browse-link">selecione no computador</span></span><small>LOG · TXT · CSV / MÁX. 2 MB</small><input type="file" id="log-file" accept=".log,.txt,.csv,text/plain,text/csv" hidden></label>
+          <div class="upload-actions"><button class="button button-secondary" id="load-sample">Carregar exemplo</button><button class="button button-primary" id="analyze-button" disabled>Analisar arquivo <span>→</span></button></div>
+          <p class="file-status" id="file-status" aria-live="polite">Nenhum arquivo selecionado.</p>
+        </section>
+        <section class="panel analysis-results" id="analysis-results" hidden><div class="panel-heading"><div><h2>Resultado da análise</h2><p id="analysis-summary">Resumo</p></div><button class="button button-secondary" id="export-results">Exportar JSON</button></div>
+          <div class="result-metrics"><div><span>Linhas lidas</span><strong id="result-lines">0</strong></div><div><span>Alertas</span><strong id="result-alerts">0</strong></div><div><span>Alta severidade</span><strong id="result-high">0</strong></div></div>
+          <div class="table-wrap"><table><thead><tr><th>LINHA</th><th>DETECÇÃO</th><th>SEVERIDADE</th><th>CONTEÚDO</th></tr></thead><tbody id="analysis-table"><tr><td colspan="4">Nenhum resultado.</td></tr></tbody></table></div>
+        </section>
+      </section>
+
+      <section class="view" id="view-alerts">
+        <div class="page-heading"><div><p class="eyebrow">MONITORAMENTO / DETECÇÕES</p><h1>Alertas</h1><p class="subtitle">Eventos que corresponderam às regras de detecção.</p></div><button class="button button-secondary" id="clear-alerts">Limpar sessão</button></div>
+        <div class="filter-bar"><label class="search-box"><span>⌕</span><input id="alert-search" type="search" placeholder="Buscar em eventos e conteúdo…" aria-label="Buscar alertas"></label><select id="severity-filter" aria-label="Filtrar por severidade"><option value="all">Todas as severidades</option><option value="Alta">Alta</option><option value="Média">Média</option><option value="Baixa">Baixa</option></select></div>
+        <section class="panel"><div class="table-wrap"><table><thead><tr><th>LINHA</th><th>DETECÇÃO</th><th>SEVERIDADE</th><th>CONTEÚDO</th></tr></thead><tbody id="alerts-table"><tr class="empty-row"><td colspan="4">Nenhum alerta. Analise um arquivo para popular esta tabela.</td></tr></tbody></table></div></section>
+        <p class="disclaimer">SENTINEL oferece apoio à análise defensiva. Uma detecção não confirma, por si só, um incidente de segurança.</p>
+      </section>
+      <footer class="main-footer"><span>© 2026 SENTINEL LAB</span><span><span class="status-dot"></span> Todas as análises desta versão são locais</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
