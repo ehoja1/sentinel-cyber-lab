@@ -1,7 +1,8 @@
-
-import re
+﻿import re
 from collections import Counter
 
+
+DEFAULT_BRUTE_FORCE_THRESHOLD = 5
 
 PATTERNS = {
     "SSH_LOGIN_FAILED": re.compile(
@@ -19,7 +20,13 @@ PATTERNS = {
 }
 
 
-def analyze_logs(text: str) -> dict:
+def analyze_logs(
+    text: str,
+    brute_force_threshold: int = DEFAULT_BRUTE_FORCE_THRESHOLD,
+) -> dict:
+    if brute_force_threshold < 1:
+        raise ValueError("brute_force_threshold must be at least 1")
+
     events = []
 
     for line_number, line in enumerate(text.splitlines(), start=1):
@@ -58,6 +65,22 @@ def analyze_logs(text: str) -> dict:
         if event["type"] == "SSH_LOGIN_FAILED"
     )
 
+    brute_force_alerts = [
+        {
+            "type": "SSH_BRUTE_FORCE_SUSPECTED",
+            "source_ip": ip,
+            "failed_attempts": count,
+            "threshold": brute_force_threshold,
+            "severity": "high",
+            "message": (
+                f"{count} failed SSH login attempts detected "
+                f"for IP {ip}; threshold is {brute_force_threshold}."
+            ),
+        }
+        for ip, count in failed_by_ip.most_common()
+        if count >= brute_force_threshold
+    ]
+
     return {
         "lines_analyzed": len(text.splitlines()),
         "events_found": len(events),
@@ -66,4 +89,5 @@ def analyze_logs(text: str) -> dict:
             {"ip": ip, "attempts": count}
             for ip, count in failed_by_ip.most_common()
         ],
+        "brute_force_alerts": brute_force_alerts,
     }
