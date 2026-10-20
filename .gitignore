@@ -1,20 +1,23 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Ambientes virtuais
 .venv/
 venv/
+env/
+
+# Configurações e segredos locais
 .env
+.env.*
+!.env.example
 
-# Frontend build / dependencies
-node_modules/
-dist/
-
-# Local data and reports
-*.sqlite3
-*.db
-reports/
-
-# Editor / OS
+# Editores e sistema
 .vscode/
-.DS_Store
+.idea/
 Thumbs.db
+.DS_Store
